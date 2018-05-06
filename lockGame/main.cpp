@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 
+double theta = 0.0;
 GLfloat lockBarVertices[][3] = {
         {-0.54643, -0.70357, 0},
         {-0.42143, -0.57857, 0.25},

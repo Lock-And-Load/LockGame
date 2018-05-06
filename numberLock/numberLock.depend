@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1525501480 source:g:\projects\lockgame\numberlock\main.cpp
+1525604080 source:g:\projects\lockgame\numberlock\main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<GL/glut.h>
