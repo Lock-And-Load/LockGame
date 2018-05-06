@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1525493811 source:g:\projects\lockgame\lockgame\main.cpp
+1525605159 source:g:\projects\lockgame\lockgame\main.cpp
 	<stdio.h>
 	<stdlib.h>
 	<GL/glut.h>

@@ -89,10 +89,10 @@ void lockBar(){
     glColor3d(0.8, 0.8, 0.8);
     lockBarFace(0, 8, 9, 1);
 
-    glColor3d(0.6, 0.6, 0.6);
+    glColor3d(0.45, 0.45, 0.45);
     lockBarFace(0, 8, 11, 3);
 
-    glColor3d(0.6, 0.6, 0.6);
+    glColor3d(0.8, 0.8, 0.8);
     lockBarFace(3, 11, 10, 2);
 
     glColor3d(0.5, 0.5, 0.5);
@@ -104,10 +104,10 @@ void lockBar(){
     glColor3d(0.85, 0.85, 0.85);
     lockBarFace(9, 8, 14, 13);
 
-    glColor3d(0.6, 0.6, 0.6);
+    glColor3d(0.85, 0.85, 0.85);
     lockBarFace(8, 14, 15, 11);
 
-    glColor3d(0.6, 0.6, 0.6);
+    glColor3d(0.55, 0.55, 0.55);
     lockBarFace(11, 15, 12, 10);
 
     glColor3d(0.8, 0.8, 0.8);
@@ -116,10 +116,10 @@ void lockBar(){
     glColor3d(0.45, 0.45, 0.45);
     lockBarFace(5, 13, 14, 6);
 
-    glColor3d(0.6, 0.6, 0.6);
+    glColor3d(0.8, 0.8, 0.8);
     lockBarFace(6, 14, 15, 7);
 
-    glColor3d(0.6, 0.6, 0.6);
+    glColor3d(0.5, 0.5, 0.5);
     lockBarFace(7, 15, 12, 4);
 
     glColor3d(0.6, 0.6, 0.6);
@@ -263,31 +263,18 @@ void lock(){
 
 void display(void)
 {
-    glClearColor(1.0, 1, 1.0, 1.0);
+    glClearColor(0.9, 1, 1.0, 1.0);
 	glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	GLfloat mat_ambient[]   = {0.4f, 0.4f, 0.4f, 1.0f};
-	GLfloat mat_diffuse[]   = {0.9f, 0.9f, 0.9f, 1.0f};
-	GLfloat mat_specular[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-	GLfloat mat_shininess[] = {50.0f};
-
-	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
-	glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
-	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-	GLfloat lightIntensity[] = {0.9f, 0.9f, 0.9f, 0.9f};
-	GLfloat light_position[] = {2.0f, 8.0f, 3.0f, 0.0f};
-
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightIntensity);
 
 	//glPushMatrix();
-	glRotated(5, 0, 1, 0);
+	//glRotated(22.5, 0, 1, 0);
 	//glRotated(90, 1, 0, 0);
 	glPushMatrix();
 	glScaled(1.5, 1.5, 1.5);
 	lock();
 	glPopMatrix();
 	//glPopMatrix();
+
 	glutSwapBuffers();
     glFlush();
 }
@@ -302,7 +289,7 @@ void myreshape(int w,int h)
 	else
 		 glOrtho(-2.0*(GLfloat)w/(GLfloat)h,2.0*(GLfloat)w/(GLfloat)h,-2.0,2.0,-10.0,10.0);
 	glMatrixMode(GL_MODELVIEW);
-	 glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 int main(int argc, char **argv)
@@ -314,14 +301,8 @@ int main(int argc, char **argv)
 	glutCreateWindow("KEY SIMULATION");
 	glutDisplayFunc(display);
 	glutReshapeFunc(myreshape);
-	//glutMouseFunc(mouse);
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT0);
-	//glShadeModel(GL_SMOOTH);
-	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
-    glEnable(GL_DEPTH_TEST);
 	glutMainLoop();
 	return 0;
 }

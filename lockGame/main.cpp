@@ -94,25 +94,54 @@ void lockBarFace(int a, int b, int c, int d) {
 }
 
 void lockBar(){
-    glColor3d(0.6, 0.6, 0.6);
     glPushMatrix();
     glTranslated(0, 0.3, 0);
     glScaled(0.5, 0.5, 0.5);
     glRotated(-45, 0, 0, 1);
+
+    // LOCK BAR FACES
+    glColor3d(0.8, 0.8, 0.8);
     lockBarFace(0, 1, 2, 3);
+
+    glColor3d(0.8, 0.8, 0.8);
     lockBarFace(0, 8, 9, 1);
+
+    glColor3d(0.45, 0.45, 0.45);
     lockBarFace(0, 8, 11, 3);
+
+    glColor3d(0.8, 0.8, 0.8);
     lockBarFace(3, 11, 10, 2);
+
+    glColor3d(0.5, 0.5, 0.5);
     lockBarFace(1, 9, 10, 2);
+
+    glColor3d(0.55, 0.55, 0.55);
     lockBarFace(9, 13, 12, 10);
+
+    glColor3d(0.85, 0.85, 0.85);
     lockBarFace(9, 8, 14, 13);
+
+    glColor3d(0.85, 0.85, 0.85);
     lockBarFace(8, 14, 15, 11);
+
+    glColor3d(0.55, 0.55, 0.55);
     lockBarFace(11, 15, 12, 10);
+
+    glColor3d(0.8, 0.8, 0.8);
     lockBarFace(4, 12, 13, 5);
+
+    glColor3d(0.45, 0.45, 0.45);
     lockBarFace(5, 13, 14, 6);
+
+    glColor3d(0.8, 0.8, 0.8);
     lockBarFace(6, 14, 15, 7);
+
+    glColor3d(0.5, 0.5, 0.5);
     lockBarFace(7, 15, 12, 4);
+
+    glColor3d(0.6, 0.6, 0.6);
     lockBarFace(4, 5, 6, 7);
+
     glPopMatrix();
 }
 
@@ -256,8 +285,8 @@ void display(void)
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightIntensity);
 
 	glPushMatrix();
-	glRotated(45, 0, 1, 0);
-	glRotated(-25, 1, 0, 0);
+	glRotated(22.5, 0, 1, 0);
+	//glRotated(-25, 1, 0, 0);
 	glPushMatrix();
 	lock();
 	glPopMatrix();
@@ -267,7 +296,7 @@ void display(void)
 	// INITIAL TRANSLATE -
 	glTranslated(0, 0, 0.75);
 	key();
-	glPopMatrix();
+	//glPopMatrix();
 	glPopMatrix();
 
 	glutSwapBuffers();
@@ -297,10 +326,6 @@ int main(int argc, char **argv)
 	glutDisplayFunc(display);
 	glutReshapeFunc(myreshape);
 	//glutMouseFunc(mouse);
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
     glEnable(GL_DEPTH_TEST);
