@@ -70,13 +70,9 @@ GLfloat cylinderFaceColors[][3] = {
 void lockBarFace(int a, int b, int c, int d) {
 
 	glBegin(GL_POLYGON);
-	glNormal3f(0 ,0, 1);
         glVertex3fv(lockBarVertices[a]);
-        glNormal3f(0 ,0, 1);
         glVertex3fv(lockBarVertices[b]);
-        glNormal3f(0 ,0, 1);
         glVertex3fv(lockBarVertices[c]);
-
         glVertex3fv(lockBarVertices[d]);
 	glEnd();
 }
@@ -117,7 +113,9 @@ void lockBar(){
     glPopMatrix();
 }
 
+// -----------------
 // LOCK AND KEY CODE
+// -----------------
 void lockCube(){
     glColor3d(1, 0, 0);
     glPushMatrix();
@@ -166,9 +164,20 @@ void lockKeyholePentagon(){
 
 }
 
+void lock(){
+    glPushMatrix();
+    lockCube();
+    lockFrontDecagon();
+    lockKeyholePentagon();
+    glPushMatrix();
+    // FINAL LOCATION
+    // glTranslated(0, 0.35, 0);
+    lockBar();
+    glPopMatrix();
+    glPopMatrix();
+}
 
 void keyBodyPentagonFourFace(int a, int b, int c, int d) {
-
 	glBegin(GL_POLYGON);
         glVertex3fv(keyPentagonBodyVertices[a]);
         glVertex3fv(keyPentagonBodyVertices[b]);
@@ -178,7 +187,6 @@ void keyBodyPentagonFourFace(int a, int b, int c, int d) {
 }
 
 void keyBodyPentagonFiveFace(int a, int b, int c, int d, int e) {
-
 	glBegin(GL_POLYGON);
         glVertex3fv(keyPentagonBodyVertices[a]);
         glVertex3fv(keyPentagonBodyVertices[b]);
@@ -273,37 +281,32 @@ void key(){
     glPopMatrix();
 }
 
-void lock(){
-    glPushMatrix();
-    lockCube();
-    lockFrontDecagon();
-    lockKeyholePentagon();
-    glPushMatrix();
-    // FINAL LOCATION
-    // glTranslated(0, 0.35, 0);
-    lockBar();
-    glPopMatrix();
-    glPopMatrix();
-}
-
 void displayLockAndKey(){
     glPushMatrix();
 	glRotated(22.5, 0, 1, 0);
 	//glRotated(-25, 1, 0, 0);
-	glPushMatrix();
-	lock();
-	glPopMatrix();
-	glPushMatrix();
-	// FINAL TRANSLATE -
-	// glTranslated(0, 0, -0.175);
-	// INITIAL TRANSLATE -
-	glTranslated(0, 0, 0.75);
-	key();
+        glPushMatrix();
+            glScaled(1.5, 1.5, 1.5);
+            glPushMatrix();
+            lock();
+            glPopMatrix();
+            glPushMatrix();
+            // FINAL TRANSLATE -
+            // glTranslated(0, 0, -0.175);
+            // INITIAL TRANSLATE -
+            glTranslated(0, 0, 0.75);
+            key();
+            glPopMatrix();
+        glPopMatrix();
 	//glPopMatrix();
-	glPopMatrix();
 }
+// -----------------
 // LOCK AND KEY CODE
+// -----------------
 
+// -----------------
+// NUMBER LOCK CODE
+// -----------------
 void numberLockCube(){
     glColor3d(0.6, 0.3, 0.9);
     glPushMatrix();
@@ -312,10 +315,7 @@ void numberLockCube(){
 	glPopMatrix();
 }
 
-
-
 void numberCylinderFourFace(int a, int b, int c, int d) {
-
 	glBegin(GL_POLYGON);
         glVertex3fv(numberCylinderVertices[a]);
         glVertex3fv(numberCylinderVertices[b]);
@@ -325,7 +325,6 @@ void numberCylinderFourFace(int a, int b, int c, int d) {
 }
 
 void numberCylinderSixFace(int a, int b, int c, int d, int e, int f) {
-
 	glBegin(GL_POLYGON);
         glVertex3fv(numberCylinderVertices[a]);
         glVertex3fv(numberCylinderVertices[b]);
@@ -339,7 +338,6 @@ void numberCylinderSixFace(int a, int b, int c, int d, int e, int f) {
 void numberCylinder(){
     glColor3d(0.6, 0.8, 0.6);
     glPushMatrix();
-
     glColor3fv(cylinderFaceColors[0]);
     numberCylinderFourFace(0, 1, 7, 6);
     glColor3fv(cylinderFaceColors[1]);
@@ -352,13 +350,10 @@ void numberCylinder(){
     numberCylinderFourFace(4, 5, 11, 10);
     glColor3fv(cylinderFaceColors[5]);
     numberCylinderFourFace(5, 0, 6, 11);
-
     glColor3d(0.6, 0.6, 0.6);
     numberCylinderSixFace(0, 1, 2, 3, 4, 5);
     numberCylinderSixFace(6, 7, 8, 9, 10, 11);
-
     glPopMatrix();
-
 }
 
 void numberCylinderOne(){
@@ -423,7 +418,7 @@ void guessSphereThree(){
     glPopMatrix();
 }
 
-void guessCubes(){
+void guessSpheres(){
     glPushMatrix();
     guessSphereOne();
     guessSphereTwo();
@@ -435,7 +430,7 @@ void numberLock(){
     glPushMatrix();
     numberLockCube();
     numberCylinders();
-    guessCubes();
+    guessSpheres();
 
     glPushMatrix();
     // FINAL LOCATION
@@ -455,15 +450,17 @@ void displayNumberLock(){
 	numberLock();
 	glPopMatrix();
 	//glPopMatrix();
-
 }
+// -----------------
+// NUMBER LOCK CODE
+// -----------------
 
 void display(void)
 {
     glClearColor(0.9, 1, 1.0, 1.0);
 	glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	//displayLockAndKey();
-    displayNumberLock();
+	displayLockAndKey();
+    //displayNumberLock();
 	glutSwapBuffers();
     glFlush();
 }
@@ -490,7 +487,7 @@ int main(int argc, char **argv)
 	glutCreateWindow("lock and key game");
 	glutDisplayFunc(display);
 	glutReshapeFunc(myreshape);
-	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
 	glutMainLoop();
 	return 0;
