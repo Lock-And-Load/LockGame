@@ -644,8 +644,12 @@ void display(void) {
 
     if(gameMode == 0){
         displayLockAndKey();
+        glutKeyboardFunc(lockAndKeyKeyboard);
+        glutIdleFunc(animateKey);
     } else {
         displayNumberLock();
+        glutKeyboardFunc(numberLockKeyboard);
+        glutIdleFunc(animateNumberLock);
     }
 
 	glutSwapBuffers();
@@ -672,14 +676,6 @@ int main(int argc, char **argv) {
 	glutCreateWindow("lock and key game");
 
 	glutMouseFunc(mouse);
-	if(gameMode == 0){
-        glutKeyboardFunc(lockAndKeyKeyboard);
-        glutIdleFunc(animateKey);
-    } else {
-        glutKeyboardFunc(numberLockKeyboard);
-        glutIdleFunc(animateNumberLock);
-    }
-
 	glutDisplayFunc(display);
 	glutReshapeFunc(myreshape);
     glEnable(GL_DEPTH_TEST);
