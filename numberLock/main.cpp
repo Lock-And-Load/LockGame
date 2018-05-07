@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 
-int gameMode = 1; // 0 - pad lock, 1 - number lock
+int gameMode = 0; // 0 - pad lock, 1 - number lock
 
 GLfloat keyZ = 0.75;
 GLfloat keyTheta = 0;
@@ -137,9 +137,6 @@ void lockBar(){
     glPopMatrix();
 }
 
-// -----------------
-// LOCK AND KEY CODE
-// -----------------
 void cubeFace(int a, int b, int c, int d) {
 	glBegin(GL_POLYGON);
         glVertex3fv(cubeVertices[a]);
@@ -148,6 +145,10 @@ void cubeFace(int a, int b, int c, int d) {
         glVertex3fv(cubeVertices[d]);
 	glEnd();
 }
+
+// -----------------
+// LOCK AND KEY CODE
+// -----------------
 
 void lockCube(){
     glColor3d(1, 0, 0);
@@ -249,16 +250,26 @@ void keyBodyPentagonFiveFace(int a, int b, int c, int d, int e) {
 }
 
 void keyBodyPentagon(){
-    glColor3d(0.6, 0.6, 0.6);
     glPushMatrix();
     glScaled(0.09, 0.09, 0.7);
     glTranslated(0, -0.415, 0.9);
     keyBodyPentagonFiveFace(0, 1, 2, 3, 4);
+
+    glColor3d(0.7, 0.7, 0.7);
     keyBodyPentagonFourFace(0, 1, 6, 5);
+
+    glColor3d(0.8, 0.8, 0.8);
     keyBodyPentagonFourFace(1, 2, 7, 6);
+
+    glColor3d(0.7, 0.7, 0.7);
     keyBodyPentagonFourFace(2, 3, 8, 7);
+
+    glColor3d(0.6, 0.6, 0.6);
     keyBodyPentagonFourFace(3, 4, 9, 8);
+
+    glColor3d(0.5, 0.5, 0.5);
     keyBodyPentagonFourFace(4, 0, 5, 9);
+
     keyBodyPentagonFiveFace(5, 6, 7, 8, 9);
     glPopMatrix();
 }
@@ -273,7 +284,7 @@ void keyBlockOne(){
 }
 
 void keyBlockTwo(){
-    glColor3f(0.4, 0.1, 0.9);
+    glColor3f(0.375, 0.875, 0.175);
     glPushMatrix();
     glScaled(0.05, 0.22, 0.1);
     glTranslated(0, -0.6, 1.1);
@@ -282,7 +293,7 @@ void keyBlockTwo(){
 }
 
 void keyBlockThree(){
-    glColor3f(0.1, 0.7, 0.7);
+    glColor3f(0.35, 0.85, 0.15);
     glPushMatrix();
     glScaled(0.05, 0.26, 0.1);
     glTranslated(0, -0.6, 2.3);
@@ -291,7 +302,7 @@ void keyBlockThree(){
 }
 
 void keyBlockFour(){
-    glColor3f(0.4, 0.1, 0.6);
+    glColor3f(0.325, 0.825, 0.125);
     glPushMatrix();
     glScaled(0.05, 0.32, 0.1);
     glTranslated(0, -0.6, 3.5);
@@ -374,9 +385,9 @@ void animateKey(){
 }
 
 void displayLockAndKey(){
-    glPushMatrix();
-	glRotated(22.5, 0, 1, 0);
-	glRotated(-25, 1, 0, 0);
+    //glPushMatrix();
+	glRotated(0.1, 0, 1, 0);
+	//glRotated(-0.1, 1, 0, 0);
         glPushMatrix();
             glScaled(1.5, 1.5, 1.5);
             glPushMatrix();
@@ -391,7 +402,7 @@ void displayLockAndKey(){
             key();
             glPopMatrix();
         glPopMatrix();
-	glPopMatrix();
+	//glPopMatrix();
 }
 
 void lockAndKeyKeyboard( unsigned char key, int x, int y){
@@ -423,7 +434,25 @@ void numberLockCube(){
     glColor3d(0.6, 0.3, 0.9);
     glPushMatrix();
 	glScaled(0.9, 0.9, 0.5);
-	glutSolidCube(1.0);
+
+	glColor3d(0.6, 0.3, 0.9);
+	cubeFace(0, 3, 2, 1);
+
+	glColor3d(0.65, 0.35, 0.95);
+	cubeFace(2, 3, 7, 6);
+
+	glColor3d(0.5, 0.2, 0.8);
+	cubeFace(0, 4, 7, 3);
+
+	glColor3d(0.7, 0.4, 1);
+	cubeFace(1, 2, 6, 5);
+
+	glColor3d(0.6, 0.3, 0.9);
+	cubeFace(4, 5, 6, 7);
+
+	glColor3d(0.45, 0.15, 0.75);
+	cubeFace(0, 1, 5, 4);
+
 	glPopMatrix();
 }
 
@@ -554,14 +583,14 @@ void numberLock(){
 }
 
 void displayNumberLock(){
-    //glPushMatrix();
-	//glRotated(22.5, 0, 1, 0);
-	//glRotated(90, 1, 0, 0);
-	glPushMatrix();
-	glScaled(1.5, 1.5, 1.5);
-	numberLock();
+    glPushMatrix();
+        glRotated(0.05, 0, 1, 0);
+        glRotated(0.05, 1, 0, 0);
+        glPushMatrix();
+            glScaled(1.5, 1.5, 1.5);
+            numberLock();
+        glPopMatrix();
 	glPopMatrix();
-	//glPopMatrix();
 }
 
 void animateNumberLock(){
@@ -586,42 +615,40 @@ void numberLockKeyboard(unsigned char key, int x, int y){
     if(key == '7'){
         cylinderThetaOne += 60;
         currentFaceOne = (++currentFaceOne) % 6;
-        printf("current face of cylinder 1 : %d\n", currentFaceOne);
     }
     if(key == '9'){
         cylinderThetaOne -= 60;
         currentFaceOne = (--currentFaceOne) % 6;
         if(currentFaceOne == -1) currentFaceOne = 5;
-        printf("current face of cylinder 1 : %d\n", currentFaceOne);
     }
 
     // CYLINDER TWO KEY HANDLER
     if(key == '4'){
         cylinderThetaTwo += 60;
         currentFaceTwo = (++currentFaceTwo) % 6;
-        printf("current face of cylinder 2 : %d\n", currentFaceTwo);
     }
     if(key == '6'){
         cylinderThetaTwo -= 60;
         currentFaceTwo = (--currentFaceTwo) % 6;
         if(currentFaceTwo == -1) currentFaceTwo = 5;
-        printf("current face of cylinder 2 : %d\n", currentFaceTwo);
+
     }
 
     // CYLINDER THREE KEY HANDLER
-    if(key == '1'){
+    if(key == '1') {
         cylinderThetaThree += 60;
         currentFaceThree = (++currentFaceThree) % 6;
-        printf("current face of cylinder 3 : %d\n", currentFaceThree);
+
     }
-    if(key == '3'){
+    if(key == '3') {
         cylinderThetaThree -= 60;
         currentFaceThree = (--currentFaceThree) % 6;
         if(currentFaceThree == -1) currentFaceThree = 5;
-        printf("current face of cylinder 3 : %d\n", currentFaceThree);
     }
 
-
+    printf("current face of cylinder 1 : %d\n", currentFaceOne);
+    printf("current face of cylinder 2 : %d\n", currentFaceTwo);
+    printf("current face of cylinder 3 : %d\n", currentFaceThree);
     glutPostRedisplay();
 }
 // -----------------
