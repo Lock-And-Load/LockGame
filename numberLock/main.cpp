@@ -628,7 +628,15 @@ void numberLockKeyboard(unsigned char key, int x, int y){
 // NUMBER LOCK CODE
 // -----------------
 
-//void mouse(int btn, int state, int x, int y){}
+void mouse(int btn, int state, int x, int y){
+    if(btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
+        gameMode = 0;
+    }
+    if(btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
+        gameMode = 1;
+    }
+    glutPostRedisplay();
+}
 
 void display(void) {
     glClearColor(0.9, 1, 1.0, 1.0);
@@ -663,6 +671,7 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(0, 35);
 	glutCreateWindow("lock and key game");
 
+	glutMouseFunc(mouse);
 	if(gameMode == 0){
         glutKeyboardFunc(lockAndKeyKeyboard);
         glutIdleFunc(animateKey);
