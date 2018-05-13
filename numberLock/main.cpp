@@ -2,15 +2,19 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 
-int gameMode = 0; // 0 - pad lock, 1 - number lock
+int gameMode = -1; // 0 - pad lock, 1 - number lock
 
 GLfloat keyZ = 0.75;
 GLfloat keyTheta = 0;
 GLfloat lockBarY = 0;
+int lockAndKeyThetaX = 0;
+int lockAndKeyThetaZ = 0;
 int keyPosition = 0;
 int lockAndKeyAction = -1; // 0 - outside, 1 - inside the lock
 
 int numberLockPosition = 0;
+int numberLockThetaX = 0;
+int numberLockThetaZ = 0;
 
 int ansOne = 1;
 int ansTwo = 4;
@@ -24,6 +28,30 @@ int currentFaceThree = 0;
 int cylinderThetaOne = 0;
 int cylinderThetaTwo = 0;
 int cylinderThetaThree = 0;
+void drawDetails(char ch[] , float x,float y)
+{
+    int i;
+    glRasterPos2f(x,y);
+
+    for(i = 0; ch[i] != '\0'; i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,ch[i]);
+    }
+}
+
+void intro()
+{
+     glClearColor(1,0.8,0.3,0);
+     glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glColor3f(0,0.5,0.5);
+       drawDetails("COMPUTER GRAPHICS AND VISUALIZATION MINI PROJECT",-1.5,1.5);
+        drawDetails("PROJECT : LOCK SIMULATION",-0.8,1);
+        drawDetails("NAME : ABHISHEK KONKAL",-0.8,0.2);
+        drawDetails("USN : 1PE15CS004",-0.8,0.0);
+        drawDetails("NAME : ABHIJEETH PADARTHI",-0.8,0.6);
+        drawDetails("USN : 1PE15CS001",-0.8,0.4);
+       // drawStrokeText("COMPUTER GRAPHICS AND VISUALIZATION MINI PROJEC",0,0);
+}
 
 GLfloat cubeVertices[][3] = {
     {-0.5, -0.5, -0.5},
@@ -137,6 +165,9 @@ void lockBar(){
     glPopMatrix();
 }
 
+// -----------------
+// LOCK AND KEY CODE
+// -----------------
 void cubeFace(int a, int b, int c, int d) {
 	glBegin(GL_POLYGON);
         glVertex3fv(cubeVertices[a]);
@@ -145,10 +176,6 @@ void cubeFace(int a, int b, int c, int d) {
         glVertex3fv(cubeVertices[d]);
 	glEnd();
 }
-
-// -----------------
-// LOCK AND KEY CODE
-// -----------------
 
 void lockCube(){
     glColor3d(1, 0, 0);
@@ -284,7 +311,7 @@ void keyBlockOne(){
 }
 
 void keyBlockTwo(){
-    glColor3f(0.375, 0.875, 0.175);
+    glColor3f(0.4, 0.1, 0.9);
     glPushMatrix();
     glScaled(0.05, 0.22, 0.1);
     glTranslated(0, -0.6, 1.1);
@@ -293,7 +320,7 @@ void keyBlockTwo(){
 }
 
 void keyBlockThree(){
-    glColor3f(0.35, 0.85, 0.15);
+    glColor3f(0.1, 0.7, 0.7);
     glPushMatrix();
     glScaled(0.05, 0.26, 0.1);
     glTranslated(0, -0.6, 2.3);
@@ -302,7 +329,7 @@ void keyBlockThree(){
 }
 
 void keyBlockFour(){
-    glColor3f(0.325, 0.825, 0.125);
+    glColor3f(0.4, 0.1, 0.6);
     glPushMatrix();
     glScaled(0.05, 0.32, 0.1);
     glTranslated(0, -0.6, 3.5);
@@ -385,28 +412,26 @@ void animateKey(){
 }
 
 void displayLockAndKey(){
-    //glPushMatrix();
-	glRotated(0.1, 0, 1, 0);
-	//glRotated(-0.1, 1, 0, 0);
+
+    glPushMatrix();
+	glRotated(lockAndKeyThetaZ, 0, 1, 0);
+	glRotated(lockAndKeyThetaX, 1, 0, 0);
         glPushMatrix();
             glScaled(1.5, 1.5, 1.5);
             glPushMatrix();
             lock();
             glPopMatrix();
             glPushMatrix();
-            // FINAL TRANSLATE -
-            // glTranslated(0, 0, -0.175);
-            // INITIAL TRANSLATE -
             glTranslated(0, 0, keyZ);
             glRotated(-keyTheta, 0, 0, 1); // TODO - FIX ROTATION
             key();
             glPopMatrix();
         glPopMatrix();
-	//glPopMatrix();
+	glPopMatrix();
 }
 
 void lockAndKeyKeyboard( unsigned char key, int x, int y){
-    if(key == 'l'){
+    if(key == 'u'){
         keyZ = 0.75;
         keyTheta = 0;
         lockBarY = 0;
@@ -414,13 +439,26 @@ void lockAndKeyKeyboard( unsigned char key, int x, int y){
         lockAndKeyAction = 0;
         glutPostRedisplay();
     }
-    if(key == 'u'){
+    if(key == 'l'){
         keyZ = -0.175;
         keyTheta = 360;
         lockBarY = 0.35;
         keyPosition = 2;
         lockAndKeyAction = 1;
         glutPostRedisplay();
+    }
+
+    if(key == 'w'){
+        --lockAndKeyThetaX;
+    }
+    if(key == 's'){
+        ++lockAndKeyThetaX;
+    }
+    if(key == 'a'){
+        --lockAndKeyThetaZ;
+    }
+    if(key == 'd'){
+        ++lockAndKeyThetaZ;
     }
 }
 // -----------------
@@ -584,12 +622,12 @@ void numberLock(){
 
 void displayNumberLock(){
     glPushMatrix();
-        glRotated(0.05, 0, 1, 0);
-        glRotated(0.05, 1, 0, 0);
-        glPushMatrix();
-            glScaled(1.5, 1.5, 1.5);
-            numberLock();
-        glPopMatrix();
+	glRotated(numberLockThetaZ, 0, 1, 0);
+	glRotated(numberLockThetaX, 1, 0, 0);
+	glPushMatrix();
+	glScaled(1.5, 1.5, 1.5);
+	numberLock();
+	glPopMatrix();
 	glPopMatrix();
 }
 
@@ -615,40 +653,55 @@ void numberLockKeyboard(unsigned char key, int x, int y){
     if(key == '7'){
         cylinderThetaOne += 60;
         currentFaceOne = (++currentFaceOne) % 6;
+        printf("current face of cylinder 1 : %d\n", currentFaceOne);
     }
     if(key == '9'){
         cylinderThetaOne -= 60;
         currentFaceOne = (--currentFaceOne) % 6;
         if(currentFaceOne == -1) currentFaceOne = 5;
+        printf("current face of cylinder 1 : %d\n", currentFaceOne);
     }
 
     // CYLINDER TWO KEY HANDLER
     if(key == '4'){
         cylinderThetaTwo += 60;
         currentFaceTwo = (++currentFaceTwo) % 6;
+        printf("current face of cylinder 2 : %d\n", currentFaceTwo);
     }
     if(key == '6'){
         cylinderThetaTwo -= 60;
         currentFaceTwo = (--currentFaceTwo) % 6;
         if(currentFaceTwo == -1) currentFaceTwo = 5;
-
+        printf("current face of cylinder 2 : %d\n", currentFaceTwo);
     }
 
     // CYLINDER THREE KEY HANDLER
-    if(key == '1') {
+    if(key == '1'){
         cylinderThetaThree += 60;
         currentFaceThree = (++currentFaceThree) % 6;
-
+        printf("current face of cylinder 3 : %d\n", currentFaceThree);
     }
-    if(key == '3') {
+    if(key == '3'){
         cylinderThetaThree -= 60;
         currentFaceThree = (--currentFaceThree) % 6;
         if(currentFaceThree == -1) currentFaceThree = 5;
+        printf("current face of cylinder 3 : %d\n", currentFaceThree);
     }
 
-    printf("current face of cylinder 1 : %d\n", currentFaceOne);
-    printf("current face of cylinder 2 : %d\n", currentFaceTwo);
-    printf("current face of cylinder 3 : %d\n", currentFaceThree);
+    if(key == 'w'){
+        --numberLockThetaX;
+    }
+    if(key == 's'){
+        ++numberLockThetaX;
+    }
+    if(key == 'a'){
+        --numberLockThetaZ;
+    }
+    if(key == 'd'){
+        ++numberLockThetaZ;
+    }
+
+
     glutPostRedisplay();
 }
 // -----------------
@@ -669,16 +722,21 @@ void display(void) {
     glClearColor(0.9, 1, 1.0, 1.0);
 	glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+	if(gameMode==-1)
+    {
+        intro();
+    }
     if(gameMode == 0){
+        glClearColor(1, 1,.5, 1.0);
+	glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         displayLockAndKey();
         glutKeyboardFunc(lockAndKeyKeyboard);
         glutIdleFunc(animateKey);
-    } else {
+    } if(gameMode==1) {
         displayNumberLock();
         glutKeyboardFunc(numberLockKeyboard);
         glutIdleFunc(animateNumberLock);
     }
-
 	glutSwapBuffers();
     glFlush();
 }
@@ -698,7 +756,7 @@ void myreshape(int w,int h) {
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(2000,2000);
 	glutInitWindowPosition(0, 35);
 	glutCreateWindow("lock and key game");
 
