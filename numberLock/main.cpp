@@ -24,7 +24,6 @@ int currentFaceOne = 0;
 int currentFaceTwo = 0;
 int currentFaceThree = 0;
 
-// TODO - DYNAMIC CHANGE
 int cylinderThetaOne = 0;
 int cylinderThetaTwo = 0;
 int cylinderThetaThree = 0;
@@ -44,13 +43,12 @@ void intro()
      glClearColor(1,0.8,0.3,0);
      glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glColor3f(0,0.5,0.5);
-       drawDetails("COMPUTER GRAPHICS AND VISUALIZATION MINI PROJECT",-1.5,1.5);
-        drawDetails("PROJECT : LOCK SIMULATION",-0.8,1);
+        drawDetails("COMPUTER GRAPHICS AND VISUALIZATION MINI PROJECT",-1.5,1.5);
+        drawDetails("PROJECT : LOCK AND KEY GAME",-0.8,1);
         drawDetails("NAME : ABHISHEK KONKAL",-0.8,0.2);
         drawDetails("USN : 1PE15CS004",-0.8,0.0);
         drawDetails("NAME : ABHIJEETH PADARTHI",-0.8,0.6);
         drawDetails("USN : 1PE15CS001",-0.8,0.4);
-       // drawStrokeText("COMPUTER GRAPHICS AND VISUALIZATION MINI PROJEC",0,0);
 }
 
 GLfloat cubeVertices[][3] = {
