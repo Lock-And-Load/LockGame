@@ -1,16 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glut.h>
+#define KEY_DISTANCE 1.5
 
 int gameMode = -1; // 0 - pad lock, 1 - number lock
+int won = 0;
 
-GLfloat keyZ = 0.75;
+GLfloat keyZ = KEY_DISTANCE;
 GLfloat keyTheta = 0;
 GLfloat lockBarY = 0;
 int lockAndKeyThetaX = 0;
 int lockAndKeyThetaZ = 0;
 int keyPosition = 0;
 int lockAndKeyAction = -1; // 0 - outside, 1 - inside the lock
+
+int keySphereThetaX = 0;
+int keySphereThetaY = 0;
 
 int numberLockPosition = 0;
 int numberLockThetaX = 0;
@@ -181,22 +186,22 @@ void lockCube(){
 	glScaled(0.9, 0.9, 0.5);
 	glPushMatrix();
 
-	glColor3d(0.9, 0, 0);
+	glColor3d(0.9, 0.3, 0);
 	cubeFace(0, 3, 2, 1);
 
-	glColor3d(0.9, 0, 0);
+	glColor3d(0.9, 0.3, 0);
 	cubeFace(2, 3, 7, 6);
 
-	glColor3d(0.8, 0, 0);
+	glColor3d(0.8, 0.3, 0);
 	cubeFace(0, 4, 7, 3);
 
-	glColor3d(0.95, 0, 0);
+	glColor3d(0.95, 0.3, 0);
 	cubeFace(1, 2, 6, 5);
 
-	glColor3d(1, 0, 0);
+	glColor3d(1, 0.3, 0);
 	cubeFace(4, 5, 6, 7);
 
-	glColor3d(0.75, 0, 0);
+	glColor3d(0.75, 0.3, 0);
 	cubeFace(0, 1, 5, 4);
 
 	glPopMatrix();
@@ -299,8 +304,8 @@ void keyBodyPentagon(){
     glPopMatrix();
 }
 
-void keyBlockOne(){
-    glColor3f(0.4, 0.9, 0.2);
+void keyBlockOne(float r, float g, float b){
+    glColor3f(r, g, b);
     glPushMatrix();
     glScaled(0.05, 0.32, 0.1);
     glTranslated(0, -0.6, -0.1);
@@ -308,8 +313,8 @@ void keyBlockOne(){
     glPopMatrix();
 }
 
-void keyBlockTwo(){
-    glColor3f(0.4, 0.1, 0.9);
+void keyBlockTwo(float r, float g, float b){
+    glColor3f(r, g, b);
     glPushMatrix();
     glScaled(0.05, 0.22, 0.1);
     glTranslated(0, -0.6, 1.1);
@@ -317,8 +322,8 @@ void keyBlockTwo(){
     glPopMatrix();
 }
 
-void keyBlockThree(){
-    glColor3f(0.1, 0.7, 0.7);
+void keyBlockThree(float r, float g, float b){
+    glColor3f(r, g, b);
     glPushMatrix();
     glScaled(0.05, 0.26, 0.1);
     glTranslated(0, -0.6, 2.3);
@@ -326,8 +331,8 @@ void keyBlockThree(){
     glPopMatrix();
 }
 
-void keyBlockFour(){
-    glColor3f(0.4, 0.1, 0.6);
+void keyBlockFour(float r, float g, float b){
+    glColor3f(r, g, b);
     glPushMatrix();
     glScaled(0.05, 0.32, 0.1);
     glTranslated(0, -0.6, 3.5);
@@ -335,7 +340,7 @@ void keyBlockFour(){
     glPopMatrix();
 }
 
-void keyHandle(){
+void rightKeyHandle(){
     glColor3f(0.7, 0.7, 0.7);
     glPushMatrix();
     glTranslated(0, -0.04, 1.35);
@@ -351,34 +356,67 @@ void keyHandle(){
     glPopMatrix();
 }
 
-void keyBlocks(){
-    glColor3d(0.6, 0.6, 0.6);
+void wrongKeyHandle(){
+    glColor3f(0.7, 0.7, 0.7);
     glPushMatrix();
-        keyBlockOne();
-        keyBlockTwo();
-        keyBlockThree();
-        keyBlockFour();
+    glTranslated(0, -0.04, 1.35);
+    glutSolidSphere(0.05, 30, 30);
+    glPopMatrix();
+
+    glColor3f(0.9, 0.1, 0.1);
+    glPushMatrix();
+    glTranslated(0, -0.04, 1.5);
+    glRotated(90, 0, 1, 0);
+    glScaled(0.2,0.2,0.2);
+    glutSolidTorus(0.15, 0.7, 30, 30);
     glPopMatrix();
 }
 
-void key(){
+void rightKeyBlocks(){
+    glPushMatrix();
+        keyBlockOne(0.1, 0.9, 0.1);
+        keyBlockTwo(0.1, 0.8, 0.1);
+        keyBlockThree(0.1, 0.7, 0.1);
+        keyBlockFour(0.1, 0.6, 0.1);
+    glPopMatrix();
+}
+
+void wrongKeyBlocks(){
+    glColor3d(0.6, 0.6, 0.6);
+    glPushMatrix();
+        keyBlockOne(0.9, 0.1, 0.1);
+        keyBlockTwo(0.8, 0.1, 0.1);
+        keyBlockThree(0.7, 0.1, 0.1);
+        keyBlockFour(0.6, 0.1, 0.1);
+    glPopMatrix();
+}
+
+void rightKey(){
     glPushMatrix();
     keyBodyPentagon();
-    keyBlocks();
-    keyHandle();
+    rightKeyBlocks();
+    rightKeyHandle();
+    glPopMatrix();
+}
+
+void wrongKey(){
+    glPushMatrix();
+    keyBodyPentagon();
+    wrongKeyBlocks();
+    wrongKeyHandle();
     glPopMatrix();
 }
 
 void animateKey(){
     if(lockAndKeyAction == 0){
         if(keyZ >= -0.175){
-            keyZ -= 0.0005;
+            keyZ -= 0.005;
         }
         if(keyZ < -0.175){
             keyPosition = 1;
         }
         if(keyPosition == 1 && keyTheta <= 360){
-            keyTheta+= 0.5;
+            keyTheta+= 1;
         }
         if(keyTheta>360){
             keyPosition = 2;
@@ -396,17 +434,78 @@ void animateKey(){
             keyPosition = 1;
         }
         if(keyPosition == 1 && keyTheta >=0) {
-            keyTheta -= 0.5;
+            keyTheta -= 1;
         }
         if(keyTheta < 0){
             keyPosition = 0;
         }
-        if(keyPosition == 0 && keyZ <= 0.75){
-            keyZ += 0.0005;
+        if(keyPosition == 0 && keyZ <= KEY_DISTANCE){
+            keyZ += 0.005;
         }
     }
 
     glutPostRedisplay();
+}
+
+void keySphere(){
+
+    //place right key
+    glPushMatrix();
+        glTranslated(0, 0, keyZ);
+        glRotated(-keyTheta, 0, 0, 1); // TODO - FIX ROTATION
+        rightKey();
+    glPopMatrix();
+
+    //place wrong keys
+    if(won == 0){
+
+        glPushMatrix();
+            glRotated(90, 1, 0, 0);
+            glPushMatrix();
+                glTranslated(0, 0, keyZ);
+                glRotated(90, 0, 0, 1);
+                wrongKey();
+            glPopMatrix();
+        glPopMatrix();
+
+        glPushMatrix();
+            glRotated(90, 0, 1, 0);
+            glPushMatrix();
+                glTranslated(0, 0, keyZ);
+                glRotated(90, 0, 0, 1);
+                wrongKey();
+            glPopMatrix();
+        glPopMatrix();
+
+        glPushMatrix();
+            glRotated(270, 0, 1, 0);
+            glPushMatrix();
+                glTranslated(0, 0, keyZ);
+                glRotated(90, 0, 0, 1);
+                wrongKey();
+            glPopMatrix();
+        glPopMatrix();
+
+        glPushMatrix();
+            glRotated(180, 1, 0, 0);
+            glPushMatrix();
+                glTranslated(0, 0, keyZ);
+                glRotated(90, 0, 0, 1);
+                wrongKey();
+            glPopMatrix();
+        glPopMatrix();
+
+
+        glPushMatrix();
+            glRotated(270, 1, 0, 0);
+            glPushMatrix();
+                glTranslated(0, 0, keyZ);
+                glRotated(90, 0, 0, 1);
+                wrongKey();
+            glPopMatrix();
+        glPopMatrix();
+
+    }
 }
 
 void displayLockAndKey(){
@@ -415,29 +514,43 @@ void displayLockAndKey(){
 	glRotated(lockAndKeyThetaZ, 0, 1, 0);
 	glRotated(lockAndKeyThetaX, 1, 0, 0);
         glPushMatrix();
-            glScaled(1.5, 1.5, 1.5);
+            //glScaled(1.5, 1.5, 1.5);
             glPushMatrix();
             lock();
             glPopMatrix();
+
             glPushMatrix();
-            glTranslated(0, 0, keyZ);
-            glRotated(-keyTheta, 0, 0, 1); // TODO - FIX ROTATION
-            key();
+                glRotated(keySphereThetaX, 1, 0, 0);
+                glPushMatrix();
+                    glRotated(keySphereThetaY, 0, 1, 0);
+                    keySphere();
+                glPopMatrix();
             glPopMatrix();
+
         glPopMatrix();
 	glPopMatrix();
 }
 
 void lockAndKeyKeyboard( unsigned char key, int x, int y){
-    if(key == 'u'){
-        keyZ = 0.75;
+    if(key == 'u' && won == 0 && keySphereThetaX == 0 && keySphereThetaY == 0){
+        won = 1;
+        keyZ = KEY_DISTANCE;
         keyTheta = 0;
         lockBarY = 0;
         keyPosition = 0;
         lockAndKeyAction = 0;
         glutPostRedisplay();
     }
-    if(key == 'l'){
+
+    if(key == 'u' && won == 1){
+        keyZ = KEY_DISTANCE;
+        keyTheta = 0;
+        lockBarY = 0;
+        keyPosition = 0;
+        lockAndKeyAction = 0;
+        glutPostRedisplay();
+    }
+    if(key == 'l' && won == 1){
         keyZ = -0.175;
         keyTheta = 360;
         lockBarY = 0.35;
@@ -457,6 +570,19 @@ void lockAndKeyKeyboard( unsigned char key, int x, int y){
     }
     if(key == 'd'){
         ++lockAndKeyThetaZ;
+    }
+
+    if(key == 'i' && won == 0){
+        keySphereThetaX = (keySphereThetaX-5) % 360;
+    }
+    if(key == 'k' && won == 0){
+        keySphereThetaX = (keySphereThetaX+5) % 360;
+    }
+    if(key == 'j' && won == 0){
+        keySphereThetaY = (keySphereThetaY-5) % 360;
+    }
+    if(key == 'l' && won == 0){
+        keySphereThetaY = (keySphereThetaY+5) % 360;
     }
 }
 // -----------------
@@ -754,7 +880,7 @@ void myreshape(int w,int h) {
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(2000,2000);
+	glutInitWindowSize(500,500);
 	glutInitWindowPosition(0, 35);
 	glutCreateWindow("lock and key game");
 
