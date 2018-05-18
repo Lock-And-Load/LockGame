@@ -584,6 +584,9 @@ void lockAndKeyKeyboard( unsigned char key, int x, int y){
     if(key == 'l' && won == 0){
         keySphereThetaY = (keySphereThetaY+5) % 360;
     }
+    if(key == 'q'){
+        exit(0);
+    }
 }
 // -----------------
 // LOCK AND KEY CODE
@@ -824,6 +827,9 @@ void numberLockKeyboard(unsigned char key, int x, int y){
     if(key == 'd'){
         ++numberLockThetaZ;
     }
+    if(key == 'q'){
+        exit(0);
+    }
 
 
     glutPostRedisplay();
@@ -883,12 +889,12 @@ int main(int argc, char **argv) {
 	glutInitWindowSize(500,500);
 	glutInitWindowPosition(0, 35);
 	glutCreateWindow("lock and key game");
-
 	glutMouseFunc(mouse);
 	glutDisplayFunc(display);
 	glutReshapeFunc(myreshape);
     glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
+	glutFullScreen();
 	glutMainLoop();
 	return 0;
 }
